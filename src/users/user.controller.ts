@@ -1,9 +1,20 @@
-import { Controller, Get, Post } from '@nestjs/common';
-
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { UserDto } from './user.dto';
+import { plainToInstance } from 'class-transformer';
 @Controller('users')
 export class UserController {
-  @Get()
-  getAllUser() {
+  @Post('/create')
+  createUser(@Body() user: UserDto) {
+    user.id = 1;
+    user.createdAt = new Date();
+    user.updatedAt = new Date();
+
+    return UserDto.plainToInstance(user);
+  }
+
+  @Get(':id')
+  getUserById(@Param('id') id: number) {
+    console.log('id', id);
     return [
       {
         name: 'Giang',
@@ -14,13 +25,5 @@ export class UserController {
         age: 18,
       },
     ];
-  }
-
-  @Post('/create')
-  createUser() {
-    return {
-      name: 'Giang 02',
-      old: 20,
-    };
   }
 }
