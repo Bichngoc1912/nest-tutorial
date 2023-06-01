@@ -1,6 +1,7 @@
 import { Body, Controller, Get, Param, Post, Inject } from '@nestjs/common';
 import { UserDto } from './user.dto';
 import { UserServices } from './user.services';
+import { plainToInstance } from 'class-transformer';
 
 @Controller('users')
 export class UserController {
@@ -13,7 +14,8 @@ export class UserController {
   @Post('/create')
   createUser(@Body() user: UserDto) {
     // return this.moduleRef.get('USER_SERVICES_PROVICE').createUser(user); cach 1
-    return this.userServices.createUser(user);
+    // return this.userServices.createUser(user);
+    return plainToInstance(UserDto, this.userServices.createUser(user));
   }
 
   @Get(':id')
